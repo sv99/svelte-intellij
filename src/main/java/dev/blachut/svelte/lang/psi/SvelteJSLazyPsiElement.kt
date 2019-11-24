@@ -1,6 +1,5 @@
 package dev.blachut.svelte.lang.psi
 
-import com.intellij.lang.javascript.psi.JSEmbeddedContent
 import com.intellij.psi.impl.source.tree.LazyParseablePsiElement
 import com.intellij.psi.tree.IElementType
 
@@ -9,7 +8,7 @@ import com.intellij.psi.tree.IElementType
  *
  * @see com.intellij.lang.javascript.DialectDetector.calculateJSLanguage
   */
-class SvelteJSLazyPsiElement(type: IElementType, text: CharSequence) : LazyParseablePsiElement(type, text), JSEmbeddedContent {
+class SvelteJSLazyPsiElement(type: IElementType, text: CharSequence) : LazyParseablePsiElement(type, text) {
     override fun toString(): String {
         return "SvelteJS: $elementType"
     }

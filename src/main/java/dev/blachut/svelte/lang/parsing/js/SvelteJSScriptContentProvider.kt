@@ -11,10 +11,12 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.tree.ILazyParseableElementType
 import dev.blachut.svelte.lang.SvelteJSLanguage
+import dev.blachut.svelte.lang.psi.SvelteJSElementTypes.EMBEDDED_CONTENT
 import dev.blachut.svelte.lang.psi.SvelteJSLazyPsiElement
 
 object SvelteJSScriptContentProvider : HtmlScriptContentProvider {
-    override fun getScriptElementType(): IElementType = EMBEDDED_CONTENT_WRAPPER
+    //    override fun getScriptElementType(): IElementType = SCRIPT
+    override fun getScriptElementType(): IElementType = EMBEDDED_CONTENT
 
     override fun getHighlightingLexer(): Lexer? {
         return SyntaxHighlighterFactory.getSyntaxHighlighter(SvelteJSLanguage.INSTANCE, null, null).highlightingLexer

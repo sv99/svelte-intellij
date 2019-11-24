@@ -11,6 +11,7 @@ import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiFile
 import com.intellij.psi.tree.IFileElementType
 import dev.blachut.svelte.lang.SvelteHTMLLanguage
+import dev.blachut.svelte.lang.parsing.js.SvelteJSParserDefinition
 import dev.blachut.svelte.lang.psi.SvelteHtmlFile
 
 class SvelteHTMLParserDefinition : HTMLParserDefinition() {
@@ -27,7 +28,7 @@ class SvelteHTMLParserDefinition : HTMLParserDefinition() {
     }
 
     override fun getFileNodeType(): IFileElementType {
-        return FILE
+        return SvelteJSParserDefinition.FILE
     }
 
     override fun createFile(viewProvider: FileViewProvider): PsiFile {

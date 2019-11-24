@@ -17,6 +17,5 @@ fun getRelativePath(currentFile: VirtualFile, componentFile: VirtualFile): Strin
 }
 
 fun getJsEmbeddedContent(script: PsiElement?): JSEmbeddedContent? {
-    // JSEmbeddedContent is nested twice, see SvelteJSScriptContentProvider
-    return PsiTreeUtil.getChildOfType(script, JSEmbeddedContent::class.java)?.firstChild as JSEmbeddedContent?
+    return PsiTreeUtil.getChildOfType(script, JSEmbeddedContent::class.java)
 }

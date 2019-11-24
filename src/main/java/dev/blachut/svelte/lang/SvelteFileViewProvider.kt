@@ -6,12 +6,13 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.MultiplePsiFilesPerDocumentFileViewProvider
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
+import com.intellij.psi.SingleRootFileViewProvider
 import com.intellij.psi.impl.source.PsiFileImpl
 import com.intellij.psi.templateLanguages.TemplateLanguageFileViewProvider
 import dev.blachut.svelte.lang.psi.SvelteTemplateElementTypes
 
 class SvelteFileViewProvider(virtualFile: VirtualFile, psiManager: PsiManager, eventSystemEnabled: Boolean) : MultiplePsiFilesPerDocumentFileViewProvider(psiManager, virtualFile, eventSystemEnabled), TemplateLanguageFileViewProvider {
-    private val htmlLanguage = SvelteHTMLLanguage.INSTANCE
+    private val htmlLanguage = SvelteJSLanguage.INSTANCE
 
     override fun getBaseLanguage(): Language {
         return SvelteLanguage.INSTANCE
@@ -41,3 +42,5 @@ class SvelteFileViewProvider(virtualFile: VirtualFile, psiManager: PsiManager, e
         }
     }
 }
+
+class X(virtualFile: VirtualFile, psiManager: PsiManager, eventSystemEnabled: Boolean) : SingleRootFileViewProvider(psiManager, virtualFile, eventSystemEnabled, SvelteHtmlFileType.INSTANCE)
