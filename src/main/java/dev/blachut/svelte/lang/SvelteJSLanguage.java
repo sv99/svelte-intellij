@@ -7,6 +7,7 @@ import com.intellij.lang.javascript.JSLanguageDialect;
 import com.intellij.lang.javascript.JavaScriptSupportLoader;
 import com.intellij.lang.javascript.parsing.JavaScriptParser;
 import dev.blachut.svelte.lang.parsing.js.SvelteJSParser;
+import dev.blachut.svelte.lang.parsing.js.SvelteJSPsiBuilder;
 import org.jetbrains.annotations.NotNull;
 
 public class SvelteJSLanguage extends JSLanguageDialect implements DependentLanguage {
@@ -23,6 +24,6 @@ public class SvelteJSLanguage extends JSLanguageDialect implements DependentLang
 
     @Override
     public JavaScriptParser<?, ?, ?, ?> createParser(@NotNull PsiBuilder builder) {
-        return new SvelteJSParser(builder);
+        return new SvelteJSParser(new SvelteJSPsiBuilder(builder));
     }
 }
