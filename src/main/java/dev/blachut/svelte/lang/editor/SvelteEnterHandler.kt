@@ -14,9 +14,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.elementType
 import dev.blachut.svelte.lang.SvelteFileViewProvider
-import dev.blachut.svelte.lang.parsing.html.endTokens
-import dev.blachut.svelte.lang.parsing.html.innerTokens
-import dev.blachut.svelte.lang.parsing.html.startTokens
+import dev.blachut.svelte.lang.parsing.html.initTokens
 import dev.blachut.svelte.lang.parsing.html.tailTokens
 
 /**
@@ -60,32 +58,23 @@ class SvelteEnterHandler : EnterHandlerDelegateAdapter() {
 
         val highlighter = (editor as EditorEx).highlighter
         val iterator = highlighter.createIterator(offset - 1)
-
         PsiDocumentManager.getInstance(file.project).commitDocument(editor.document)
-        val openerElement = file.findElementAt(iterator.start)
 
-        val afterStartTag = when {
-            PsiTreeUtil.findFirstParent(openerElement, true) { startTokens.contains(it.elementType) } != null -> true
-            PsiTreeUtil.findFirstParent(openerElement, true) { innerTokens.contains(it.elementType) } != null -> false
-            else -> return false
-        }
+        val prevElement = file.findElementAt(iterator.start)
+        PsiTreeUtil.findFirstParent(prevElement, true) { initTokens.contains(it.elementType) }
+            ?: return false
 
         iterator.advance()
-
         if (iterator.atEnd()) {
             // no more tokens, so certainly no next tag
             return false
         }
 
-        val closerElement = file.findElementAt(iterator.start)
 
-        val endTag = if (afterStartTag) {
-            PsiTreeUtil.findFirstParent(closerElement, true) { tailTokens.contains(it.elementType) }
-        } else {
-            PsiTreeUtil.findFirstParent(closerElement, true) { endTokens.contains(it.elementType) }
-        }
+        val nextElement = file.findElementAt(iterator.start)
 
-        // if we got this far, we're between matching tags if required tag is found
-        return endTag != null
+        val tailTag = PsiTreeUtil.findFirstParent(nextElement, true) { tailTokens.contains(it.elementType) }
+        // We're between matching tags if required tag is found
+        return tailTag != null
     }
 }
