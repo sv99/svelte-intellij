@@ -32,18 +32,6 @@ class SvelteJSReferenceExpressionResolver(referenceExpression: JSReferenceExpres
             return arrayOf(JSResolveResult(element))
         }
 
-        return resolveInComponent(expression) ?: super.resolve(expression, incompleteCode)
+        return super.resolve(expression, incompleteCode)
     }
-
-    private fun resolveInComponent(expression: JSReferenceExpressionImpl): Array<ResolveResult>? {
-        if (expression.qualifier != null) return null
-
-        return resolveInLocalBlock()
-    }
-
-    private fun resolveInLocalBlock(): Array<ResolveResult>? {
-        return null
-    }
-
-
 }
