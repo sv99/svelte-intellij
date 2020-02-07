@@ -2,14 +2,20 @@ package dev.blachut.svelte.lang.parsing.js
 
 import com.intellij.lang.PsiParser
 import com.intellij.lang.javascript.dialects.ECMA6ParserDefinition
-import com.intellij.lang.javascript.types.JSFileElementType
 import com.intellij.openapi.project.Project
+import com.intellij.psi.FileViewProvider
+import com.intellij.psi.PsiFile
 import com.intellij.psi.tree.IFileElementType
 import dev.blachut.svelte.lang.SvelteJSLanguage
+import dev.blachut.svelte.lang.psi.SvelteHtmlFile
 
 class SvelteJSParserDefinition : ECMA6ParserDefinition() {
     override fun getFileNodeType(): IFileElementType {
         return FILE
+    }
+
+    override fun createFile(viewProvider: FileViewProvider): PsiFile {
+        return SvelteHtmlFile(viewProvider)
     }
 
     override fun createParser(project: Project?): PsiParser {
@@ -20,6 +26,6 @@ class SvelteJSParserDefinition : ECMA6ParserDefinition() {
     }
 
     companion object {
-        val FILE: IFileElementType = JSFileElementType.create(SvelteJSLanguage.INSTANCE)
+        val FILE: IFileElementType = SvelteJSFileElementType(SvelteJSLanguage.INSTANCE)
     }
 }

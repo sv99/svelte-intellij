@@ -1,17 +1,24 @@
 package dev.blachut.svelte.lang.psi
 
+import com.intellij.lang.javascript.psi.impl.JSFileImpl
 import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
-import com.intellij.psi.impl.source.html.HtmlFileImpl
+import com.intellij.psi.impl.source.tree.CompositeElement
 import com.intellij.psi.scope.PsiScopeProcessor
+import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.search.ProjectScope
+import com.intellij.psi.search.PsiElementProcessor
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.xml.XmlDocument
+import com.intellij.psi.xml.XmlElementType
+import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag
 import com.intellij.xml.util.HtmlUtil
+import dev.blachut.svelte.lang.SvelteJSLanguage
 import dev.blachut.svelte.lang.getJsEmbeddedContent
-import dev.blachut.svelte.lang.parsing.html.SvelteHTMLParserDefinition
 
-class SvelteHtmlFile(viewProvider: FileViewProvider) : HtmlFileImpl(viewProvider, SvelteHTMLParserDefinition.FILE) {
+class SvelteHtmlFile(viewProvider: FileViewProvider) : JSFileImpl(viewProvider, SvelteJSLanguage.INSTANCE), XmlFile {
     val moduleScript get() = document?.children?.find { it is XmlTag && HtmlUtil.isScriptTag(it) && it.getAttributeValue("context") == "module" } as XmlTag?
     // By convention instanceScript is placed after module script
     // so it makes sense to resolve last script in case of ambiguity from missing context attribute
@@ -37,6 +44,29 @@ class SvelteHtmlFile(viewProvider: FileViewProvider) : HtmlFileImpl(viewProvider
 
     private fun processScriptDeclarations(processor: PsiScopeProcessor, state: ResolveState, lastParent: PsiElement?, place: PsiElement, script: PsiElement?): Boolean {
         return getJsEmbeddedContent(script)?.processDeclarations(processor, state, lastParent, place) ?: true
+    }
+
+    override fun getDocument(): XmlDocument? {
+        val treeElement: CompositeElement = calcTreeElement()
+        val node = treeElement.findChildByType(XmlElementType.HTML_DOCUMENT)
+        return if (node != null) node.psi as XmlDocument else null
+    }
+
+    override fun getRootTag(): XmlTag? {
+        return document?.rootTag
+    }
+
+    override fun processElements(processor: PsiElementProcessor<*>?, place: PsiElement?): Boolean {
+        val document = document
+        return document == null || document.processElements(processor, place)
+    }
+
+    override fun getFileResolveScope(): GlobalSearchScope {
+        return ProjectScope.getAllScope(project)
+    }
+
+    override fun ignoreReferencedElementAccessibility(): Boolean {
+        return true
     }
 }
 

@@ -5,4 +5,4 @@ import com.intellij.psi.PsiManager
 import com.intellij.psi.SingleRootFileViewProvider
 
 class SvelteFileViewProvider(virtualFile: VirtualFile, psiManager: PsiManager, eventSystemEnabled: Boolean)
-    : SingleRootFileViewProvider(psiManager, virtualFile, eventSystemEnabled, SvelteHTMLLanguage.INSTANCE)
+    : SingleRootFileViewProvider(psiManager, virtualFile, eventSystemEnabled, SvelteJSLanguage.INSTANCE)

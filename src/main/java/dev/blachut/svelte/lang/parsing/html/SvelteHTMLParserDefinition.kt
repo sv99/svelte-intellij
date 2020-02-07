@@ -12,7 +12,7 @@ import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.tree.IFileElementType
-import dev.blachut.svelte.lang.SvelteHTMLLanguage
+import dev.blachut.svelte.lang.SvelteJSLanguage
 import dev.blachut.svelte.lang.psi.SvelteElementTypes
 import dev.blachut.svelte.lang.psi.SvelteHtmlFile
 
@@ -47,6 +47,6 @@ class SvelteHTMLParserDefinition : HTMLParserDefinition() {
     }
 
     companion object {
-        val FILE = IFileElementType(SvelteHTMLLanguage.INSTANCE)
+        val FILE = IFileElementType(SvelteJSLanguage.INSTANCE)
     }
 }

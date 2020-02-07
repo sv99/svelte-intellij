@@ -83,6 +83,7 @@ object SvelteImportUtil {
 
         if (instanceScript == null) {
             val elementFactory = XmlElementFactory.getInstance(project)
+            // Check and change language
             val emptyInstanceScript = elementFactory.createTagFromText("<script>\n</script>", SvelteHTMLLanguage.INSTANCE)
             val moduleScript = currentFile.moduleScript
             val document = currentFile.document!!
