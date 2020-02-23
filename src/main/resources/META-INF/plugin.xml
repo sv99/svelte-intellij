@@ -97,6 +97,7 @@
         <quoteHandler fileType="Svelte HTML" className="com.intellij.codeInsight.editorActions.HtmlQuoteHandler"/>
     </extensions>
     <extensions defaultExtensionNs="JavaScript">
+        <indexedFileTypeProvider implementation="dev.blachut.svelte.lang.SvelteIndexedFileTypeProvider"/>
         <dialectSpecificHandlersFactory language="SvelteJS"
                                         implementationClass="dev.blachut.svelte.lang.SvelteJSSpecificHandlersFactory"/>
         <analysisHandlersFactory language="SvelteJS"
