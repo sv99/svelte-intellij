@@ -1,9 +1,8 @@
 package dev.blachut.svelte.lang.codeInsight
 
 
-import com.intellij.lang.ecmascript6.psi.ES6ExportSpecifierAlias
 import com.intellij.lang.ecmascript6.psi.ES6ImportExportSpecifierAlias
-import com.intellij.lang.ecmascript6.psi.ES6ImportSpecifierAlias
+import com.intellij.lang.ecmascript6.psi.ES6ImportSpecifier
 import com.intellij.lang.ecmascript6.psi.ES6ImportedBinding
 import com.intellij.lang.javascript.psi.JSElement
 import com.intellij.openapi.application.QueryExecutorBase
@@ -26,6 +25,7 @@ class SvelteReferencesSearch : QueryExecutorBase<PsiReference, ReferencesSearch.
 
         if (containingFile.virtualFile.fileType is SvelteFileType) {
             if (element is ES6ImportedBinding) {
+                element.declaredName
                 queryParameters.optimizer.searchWord(
                     componentName,
                     LocalSearchScope(containingFile),
@@ -34,29 +34,17 @@ class SvelteReferencesSearch : QueryExecutorBase<PsiReference, ReferencesSearch.
                     element
                 )
             }
-            if (element is ES6ImportSpecifierAlias) {
+            if (element is ES6ImportSpecifier) {
+                element.declaredName
+
                 queryParameters.optimizer.searchWord(
                     componentName,
                     LocalSearchScope(containingFile),
                     UsageSearchContext.IN_CODE,
                     true,
-                    element,
-                    MyProcessor(element)
+                    element
                 )
             }
-        }
-        if (element is ES6ExportSpecifierAlias && queryParameters.effectiveSearchScope is LocalSearchScope) {
-            val scope = (queryParameters.effectiveSearchScope as LocalSearchScope).scope.firstOrNull() ?: return
-            if (scope.containingFile.virtualFile.fileType !is SvelteFileType) return
-
-            queryParameters.optimizer.searchWord(
-                componentName,
-                LocalSearchScope(scope.containingFile),
-                UsageSearchContext.IN_CODE,
-                true,
-                element,
-                MyProcessor(element)
-            )
         }
     }
 
