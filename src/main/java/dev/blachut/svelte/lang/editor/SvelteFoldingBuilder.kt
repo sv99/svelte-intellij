@@ -6,7 +6,7 @@ import com.intellij.lang.folding.FoldingDescriptor
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
-import dev.blachut.svelte.lang.parsing.html.psi.SvelteBlock
+import dev.blachut.svelte.lang.psi.blocks.SvelteBlock
 import java.util.*
 
 // TODO class SvelteFoldingBuilder : FoldingBuilder, DumbAware {
