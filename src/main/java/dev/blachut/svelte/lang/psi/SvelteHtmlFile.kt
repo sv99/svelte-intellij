@@ -22,7 +22,7 @@ class SvelteHtmlFile(viewProvider: FileViewProvider) : HtmlFileImpl(viewProvider
         document ?: return true
 
         val parentScript = findAncestorScript(place)
-        if (parentScript != null && parentScript.getAttributeValue("context") == "module") {
+        if (parentScript != null && isModuleScript(parentScript)) {
             // place is inside module script, nothing more to process
             return true
         } else if (parentScript != null) {
@@ -44,9 +44,13 @@ class SvelteHtmlFile(viewProvider: FileViewProvider) : HtmlFileImpl(viewProvider
     }
 }
 
-private fun findAncestorScript(place: PsiElement): XmlTag? {
+fun findAncestorScript(place: PsiElement): XmlTag? {
     val parentScript = PsiTreeUtil.findFirstContext(place, false) {
         it is XmlTag && HtmlUtil.isScriptTag(it)
     }
     return parentScript as XmlTag?
+}
+
+fun isModuleScript(tag: XmlTag): Boolean {
+    return HtmlUtil.isScriptTag(tag) && tag.getAttributeValue("context") == "module"
 }
